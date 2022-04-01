@@ -1,6 +1,8 @@
+import java.util.ArrayList;
+
 public class Player {
     private double current;
-    private String[] hand = new String[2];
+    private ArrayList<Card> hand = new ArrayList<>();
 
     public Player(double p){
         current = p;
@@ -10,12 +12,25 @@ public class Player {
         return current;
     }
 
+    public String getHand(){
+        String s = "[ ";
+        int t = 0;
+        for(int i = 0; i < hand.size(); i++){
+            s += hand.get(i).getCard() ;
+            t += hand.get(i).getValue();
+            if(i != hand.size()-1){
+                s+= ", ";
+            }
+        }
+        s+= " ] Value: " + t;
+        return s;
+    }
+
     public void updateCurrent(double n){
         current += n;
     }
 
-    public void setHand(String[] i){
-        hand[0] = i[0];
-        hand[1] = i[1];
+    public void setStartHand(Card i){
+        hand.add(i);
     }
 }

@@ -61,7 +61,16 @@ public class Deck {
                 while(true){
                     int t = rand.nextInt(52);
                     if(!deck[t].getStat()){
+                        deck[t].setStat();
                         return deck[t];
+                    }
+                }
+            }
+
+            public void shuffle(){
+                for(int i = 0; i < deck.length; i++){
+                    if(deck[i].getStat()){
+                        deck[i].setStat();
                     }
                 }
             }

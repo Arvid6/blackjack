@@ -18,4 +18,8 @@ public class Card {
     public boolean getStat(){
         return used;
     }
+
+    public void setStat(){
+        used = !used;
+    }
 }

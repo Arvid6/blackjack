@@ -1,19 +1,19 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class Blackjack {
 
     private final int tp;
     private boolean gr = true;
-    private boolean bf = false;
+    private boolean bf = true;
     private Playerlist apl;
-    private String[] dh = new String[2];
 
     public Blackjack(int tp, double p) {
         this.tp = tp;
         apl = new Playerlist();
-        for(int i = 0; i < tp; i++){
+        for(int i = 0; i <= tp; i++){
             Player temp = new Player(p);
             apl.add(temp);
         }
@@ -27,13 +27,12 @@ public class Blackjack {
         return bf;
     }
 
+    public Player getPlayer(int i){
+        return apl.get(i);
+    }
+
     public void setBf(){
-        if(bf){
-            bf = false;
-        }
-        else{
-            bf = true;
-        }
+        bf = !bf;
     }
 
     public void stopGame(){
@@ -48,6 +47,7 @@ public class Blackjack {
         int n = 2;
         double p = 5000;
         Blackjack game = new Blackjack(n, p);
+        Deck deck = new Deck();
         while(game.getGamestate()){
             for(int i = 0; i < game.getTp(); i++){
                 System.out.println("Player " + (i+1) + " how much do you want to bet? \nCurrent balance: ");
@@ -55,18 +55,14 @@ public class Blackjack {
                 int amount = Integer.parseInt(reader.readLine());
             }
             for(int j = 0; j < game.getTp(); j++){
-                //add code to draw card
+                game.getPlayer(j).setStartHand(deck.draw());
+                game.getPlayer(j).setStartHand(deck.draw());
             }
-            //Give dealer a card
-            for(int k = 0; k < game.getTp(); k++){
-                //add code to draw card 2
-            }
-            game.setBf();
-            //give dealer second card
             while(game.getBf()){
                 for(int a = 0; a < game.getTp(); a++){
-                    //code for betting
+                    System.out.println(game.getPlayer(a).getHand());
                 }
+                break;
             }
         }
     }

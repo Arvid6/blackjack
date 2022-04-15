@@ -51,10 +51,16 @@ public class Blackjack {
         Deck deck = new Deck();
         while(game.getGamestate()){
             for(int i = 1; i <= game.getTp(); i++){
-                System.out.println("Player " + i + " how much do you want to bet? \nCurrent balance: " + game.getPlayer(i).getCurrent());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-                int amount = Integer.parseInt(reader.readLine());
-                game.getPlayer(i).setBet(amount);
+                while(true){
+                    System.out.println("Player " + i + " how much do you want to bet? \nCurrent balance: " + game.getPlayer(i).getCurrent());
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+                    int amount = Integer.parseInt(reader.readLine());
+                    if(amount <= game.getPlayer(i).getCurrent()){
+                        game.getPlayer(i).setBet(amount);
+                        break;
+                    }
+                    System.out.println("Too little money, try again");
+                }
             }
             for(int j = 0; j <= game.getTp(); j++){
                 System.out.flush();
@@ -64,7 +70,7 @@ public class Blackjack {
             for(int a = 0; a <= game.getTp(); a++){
                 if(a == 0){
 
-                    System.out.println("Dealer hand : " + game.getPlayer(a).getHand() + "\n");
+                    System.out.println("Dealer hand : " + game.getPlayer(a).getDHand() + "\n");
                 }
                 else{
                     System.out.println("Player " + a + " hand: " + game.getPlayer(a).getHand());
@@ -75,7 +81,8 @@ public class Blackjack {
                 String aw;
                 BufferedReader reader;
                 while (true){
-                    System.out.println("\n" + "Dealer hand : " + game.getPlayer(0).getHand() + "\nPlayer " + b + " hand: " + game.getPlayer(b).getHand() + "\nDo you want to Hit, Double or Stand? [H, D, S]");
+                    System.out.println("\n" + "Dealer hand : " + game.getPlayer(0).getDHand() + "\nPlayer " + b + " " +
+                            "hand: " + game.getPlayer(b).getHand() + "\nDo you want to Hit, Double or Stand? [H, D, S]");
                     reader = new BufferedReader(new InputStreamReader(System.in));
                     aw = reader.readLine();
                     if(Objects.equals(aw, "H")){
@@ -91,13 +98,17 @@ public class Blackjack {
                         }
                     }
                     else if(Objects.equals(aw, "D")){
-                        game.getPlayer(b).setStartHand(deck.draw());
-                        System.out.println("Player " + b + " hand: " + game.getPlayer(b).getHand());
-                        if(game.getPlayer(b).getValue() > 21){
-                            System.out.println("\nPlayer " + b + " hand: " + game.getPlayer(b).getHand() + "You over!!!");
-                            game.getPlayer(b).setStatF();
+                        if(game.getPlayer(b).getBet() * 2 < game.getPlayer(b).getCurrent()){
+                            game.getPlayer(b).setBet(game.getPlayer(b).getBet() * 2);
+                            game.getPlayer(b).setStartHand(deck.draw());
+                            System.out.println("Player " + b + " hand: " + game.getPlayer(b).getHand());
+                            if(game.getPlayer(b).getValue() > 21){
+                                System.out.println("\nPlayer " + b + " hand: " + game.getPlayer(b).getHand() + "You over!!!");
+                                game.getPlayer(b).setStatF();
+                            }
+                            break;
                         }
-                        break;
+                        System.out.println("Not enough money!!");
                     }
                     else if(Objects.equals(aw, "S")){
                         break;
@@ -115,7 +126,7 @@ public class Blackjack {
                 else if(game.getPlayer(0).getValue() > 21){
                     System.out.println("Dealer hand : " + game.getPlayer(0).getHand() + "\nDealer over!");
                     for(int c = 1; c <= game.getTp(); c++){
-                        if(game.getPlayer(c).getValue() > game.getPlayer(0).getValue() && game.getPlayer(c).getValue() < 22){
+                        if(game.getPlayer(c).getValue() < 22){
                             System.out.println("Player " + c + "Wins!!");
                             game.getPlayer(c).setCurrent(game.getPlayer(c).getBet());
                         }
@@ -127,7 +138,9 @@ public class Blackjack {
                     break;
                 }
                 else{
+                    System.out.println("Dealer hand : " + game.getPlayer(0).getHand());
                     for(int d = 1; d <= game.getTp(); d++){
+                        System.out.println("Player "+ d +" hand : " + game.getPlayer(d).getHand());
                         if(game.getPlayer(d).getValue() > game.getPlayer(0).getValue() && game.getPlayer(d).getValue() < 22){
                             game.getPlayer(d).setCurrent(game.getPlayer(d).getBet());
                             System.out.println("Player " + d+ " Wins!!");
@@ -147,6 +160,7 @@ public class Blackjack {
             for(int i = 0; i <= game.getTp(); i++){
                 game.getPlayer(i).clearHand();
                 game.getPlayer(i).setStatT();
+                game.getPlayer(i).setBet(0);
             }
         }
     }

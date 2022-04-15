@@ -28,6 +28,14 @@ public class Player {
         return s;
     }
 
+    public String getDHand(){
+        String s = "[ ";
+        int t = 0;
+        s += hand.get(0).getCard() ;
+        s+= ", ? ] Value: ?";
+        return s;
+    }
+
     public int getValue(){
         int t = 0;
         for(int i = 0; i < hand.size(); i++){
@@ -61,7 +69,7 @@ public class Player {
     }
 
     public void setBet(double b){
-        cb+= b;
+        cb = b;
     }
 
     public void setCurrent(double b){

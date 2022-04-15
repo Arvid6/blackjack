@@ -9,7 +9,7 @@ public class Blackjack {
     private final int tp;
     private boolean gr = true;
     private boolean bf = true;
-    private Playerlist apl;
+    private final Playerlist apl;
 
     public Blackjack(int tp, double p) {
         this.tp = tp;
@@ -103,7 +103,7 @@ public class Blackjack {
                             game.getPlayer(b).setStartHand(deck.draw());
                             System.out.println("Player " + b + " hand: " + game.getPlayer(b).getHand());
                             if(game.getPlayer(b).getValue() > 21){
-                                System.out.println("\nPlayer " + b + " hand: " + game.getPlayer(b).getHand() + "You over!!!");
+                                System.out.println("You over!!!");
                                 game.getPlayer(b).setStatF();
                             }
                             break;
